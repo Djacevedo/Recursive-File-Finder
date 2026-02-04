@@ -31,9 +31,11 @@ def sum_list(numbers):
     # TODO: Implement this function
     # Hint: if len(numbers) == 0, return 0
     # Otherwise, return numbers[0] + sum_list(numbers[1:])
-    
-    pass
 
+    if len(numbers)==0:
+        return 0
+    return 1+sum_list(numbers[1:])
+    
 # Uncomment to test sum_list
 # print("\nTest sum_list:")
 # print(f"  sum_list([1, 2, 3, 4]) = {sum_list([1, 2, 3, 4])} (expected: 10)")
@@ -63,7 +65,11 @@ def count_even(numbers):
     # If first number is even, add 1 to count from rest of list
     # If first number is odd, just return count from rest of list
     
-    pass
+    if len(numbers)==0:
+        return 0
+    if numbers[0]%2==0:
+        return 1+count_even(numbers[1:])
+    return count_even(numbers[1:0])
 
 # Uncomment to test count_even
 # print("\nTest count_even:")
@@ -95,7 +101,12 @@ def find_strings_with(strings, target):
     # Otherwise, just return results from rest of list
     # Use: if target in strings[0]
     
-    pass
+    if len(strings)==0:
+        return []
+    rest=find_infected_files(strings[1:],target)
+    if target in strings[0]:
+        return [strings[0]]+rest
+    return rest
 
 # Uncomment to test find_strings_with
 # print("\nTest find_strings_with:")
@@ -137,8 +148,13 @@ def count_files(directory_path):
     # 2. How do you list items in a directory? (Check Resource 3)
     # 3. For each item, is it a file or directory? Recursively handle directories.
     # 4. How do you combine the results?
-    
-    pass
+
+    if os.path.isfile(directory_path):
+        return 1
+    for item in os.listdir(directory_path):
+        full_path=os.path.join(directory_path,item)
+        total +=count_files(full_path)
+    return total
 
 
 # ============================================================================
@@ -174,7 +190,15 @@ def find_infected_files(directory_path, extension=".encrypted"):
     # 3. You'll need to build and return a list of matching file paths
     # 4. Use os.path.join() to create full paths
     
-    pass
+    infected = []
+    if os.path.isfile(directory_path):
+        if directory_path.endswith(extension):
+            return [directory_path]
+        return []
+    for item in os.listdir(directory_path):
+        full_path=os.path.join(directory_path,item)
+        infected.extend(find_infected_files(full_path,extension))
+    return infected
 
 
 # ============================================================================
